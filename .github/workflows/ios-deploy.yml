@@ -1,7 +1,7 @@
 name: iOS Deploy to TestFlight
 
 on:
-  workflow_dispatch: # Sadece manuel olarak (elle) tetiklenir
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -24,8 +24,7 @@ jobs:
         run: flutter analyze
 
       - name: Install Apple Certificate & Provisioning Profile
-        # Not: Eger Fastlane Match kullaniyorsaniz burayi atlayabilirsiniz.
-        # Basitlik adina Fastlane ile otomatik yonetimi (cert/sigh veya API key) tercih ediyoruz.
+
         run: echo "Skipping manual cert installation, Fastlane will use App Store Connect API."
 
       - name: Build iOS App

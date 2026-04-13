@@ -1,7 +1,7 @@
 name: Android Deploy to Play Store
 
 on:
-  workflow_dispatch: # Sadece manuel olarak (elle) tetiklenir
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -50,5 +50,5 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: com.suleymansurucu.sarababy
           releaseFiles: build/app/outputs/bundle/release/app-release.aab
-          track: internal # Bunu 'production' olarak degistirebilirsiniz
+          track: internal
           status: completed
