@@ -1,120 +1,37 @@
-# ios/fastlane/Fastfile
 default_platform(:ios)
 
-# Environment variables kullanarak güvenli hale getirildi
-API_KEY_ID = ENV['APP_STORE_CONNECT_API_KEY_ID'] || 'T793NZB3B5'
-ISSUER_ID = ENV['APP_STORE_CONNECT_ISSUER_ID'] || 'bd3d7716-83ab-4e9a-9a30-a77ec9bc8b9f'
-TEAM_ID = ENV['APPLE_TEAM_ID'] || '3588AF9993'
-BUNDLE_ID = ENV['BUNDLE_ID_IOS'] || 'com.suleymansurucu.babysara'
-API_KEY_PATH = File.expand_path("AuthKey_#{API_KEY_ID}.p8", __dir__)
-
 platform :ios do
-  desc "Deploy to App Store"
-  lane :release do
-    # Setup API Key
-    api_key_obj = app_store_connect_api_key(
-      key_id: API_KEY_ID,
-      issuer_id: ISSUER_ID,
-      key_filepath: API_KEY_PATH,
-      duration: 1200,
-      in_house: false
-    )
-
-    # Setup certificates and provisioning profiles
-    setup_ci if ENV['CI']
-    
-    sync_code_signing(
-      type: "appstore",
-      app_identifier: BUNDLE_ID,
-      team_id: TEAM_ID,
-      api_key: api_key_obj,
-      readonly: is_ci
-    ) rescue puts "Certificate sync failed, continuing..."
-
-    # Build the app
-    build_app(
-      workspace: "Runner.xcworkspace",
-      scheme: "Runner",
-      export_method: "app-store",
-      export_options: {
-        method: "app-store",
-        provisioningProfiles: {
-          BUNDLE_ID => "match AppStore #{BUNDLE_ID}"
-        }
-      },
-      output_directory: "./build",
-      output_name: "Runner.ipa",
-      clean: true,
-      skip_profile_detection: false
-    )
-
-    # Upload to App Store
-    upload_to_app_store(
-      api_key: api_key_obj,
-      force: true,
-      skip_metadata: true,
-      skip_screenshots: true,
-      precheck_include_in_app_purchases: false,
-      submit_for_review: false
-    )
-  end
-
-  desc "Build for TestFlight"
+  desc "Push a new beta build to TestFlight"
   lane :beta do
-    # Setup API Key
-    api_key_obj = app_store_connect_api_key(
-      key_id: API_KEY_ID,
-      issuer_id: ISSUER_ID,
-      key_filepath: API_KEY_PATH,
-      duration: 1200,
-      in_house: false
+    # API Key'i projeye otomatik olarak bagla
+    app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_filepath: "fastlane/AuthKey_#{ENV['APP_STORE_CONNECT_KEY_ID']}.p8",
+      in_house: false # TestFlight (Enterprise degil)
     )
 
-    # Setup certificates and provisioning profiles
-    setup_ci if ENV['CI']
+    # Sertifika ve Provisioning profillerini yonet (Basitlik icin match yerine cert/sigh kullanabilir veya otomatik Xcode imzalama)
+    # Eger Xcode uzerinde "Automatically manage signing" aciksa, get_certificates/get_provisioning_profile adimlarina gerek kalmayabilir.
+    # Burada Apple'in yeni otomatik imzalama ozelligini kullanmak daha stabil bir baslangictir.
     
-    sync_code_signing(
-      type: "appstore",
-      app_identifier: BUNDLE_ID,
-      team_id: TEAM_ID,
-      api_key: api_key_obj,
-      readonly: is_ci
-    ) rescue puts "Certificate sync failed, continuing..."
+    # Pods (eger varsa) yukle
+    cocoapods(
+      clean_install: true,
+      use_bundle_exec: false
+    ) if File.exist?("../Podfile")
 
-    # Build the app
+    # Uygulamayi derle
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
-      export_method: "app-store",
-      export_options: {
-        method: "app-store",
-        provisioningProfiles: {
-          BUNDLE_ID => "match AppStore #{BUNDLE_ID}"
-        }
-      },
-      output_directory: "./build",
-      output_name: "Runner.ipa"
+      clean: true,
+      export_method: "app-store" # TestFlight icin app-store kullanilir
     )
 
-    # Upload to TestFlight
+    # TestFlight'a yukle
     upload_to_testflight(
-      api_key: api_key_obj,
-      skip_waiting_for_build_processing: true
+      skip_waiting_for_build_processing: true # CI surecini kisaltmak icin bekleme
     )
-  end
-
-  desc "Build for development"
-  lane :build do
-    build_app(
-      workspace: "Runner.xcworkspace",
-      scheme: "Runner",
-      export_method: "development",
-      output_directory: "./build",
-      output_name: "Runner.ipa"
-    )
-  end
-  
-  error do |lane, exception|
-    puts "Error in lane #{lane}: #{exception.message}"
   end
 end

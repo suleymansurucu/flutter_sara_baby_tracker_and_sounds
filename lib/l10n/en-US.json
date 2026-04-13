@@ -658,6 +658,7 @@
   "last_feed": "Last feed",
   "woke_up_at": "Woke up at",
   "last_pump": "Last pump",
+  "last_sleep": "Last sleep",
   "tooth": "Tooth",
   "caregiver_first_name": "Caregiver First Name",
   "Check-up": "Check-up",
@@ -747,5 +748,21 @@
   "today_insight_empty": "No records yet today. Add the first activity! 👶",
   "today_insight_other_activities": "{name} today: {activities} 👶",
   "no_activities_with_filter": "No activities found for this filter.",
-  "no_activities_date_range": "No activities in the selected date range."
+  "no_activities_date_range": "No activities in the selected date range.",
+  "reset_email_sent_title": "Email Sent!",
+  "reset_email_sent_message": "A password reset link has been sent to your email. Please check your inbox.",
+
+  "notif_sleep_title": "Time to log sleep 🌙",
+  "notif_sleep_body": "{name} has been awake for a while — tap to log a nap.",
+  "notif_feed_title": "Feeding time? 🍼",
+  "notif_feed_body": "It's been a while since {name}'s last feed. Tap to log it.",
+  "notif_milestone_title": "{name} is {month} months old! 🌟",
+  "notif_milestone_body": "Check the milestones for this month and see how {name} is growing.",
+  "notif_settings_title": "Notification Settings",
+  "notif_sleep_reminders": "Sleep Reminders",
+  "notif_sleep_reminders_desc": "Remind me to log sleep after awake time",
+  "notif_feed_reminders": "Feeding Reminders",
+  "notif_feed_reminders_desc": "Remind me to log feeding after a few hours",
+  "notif_milestone_notifications": "Monthly Milestones",
+  "notif_milestone_notifications_desc": "Celebrate each month of growth"
 }

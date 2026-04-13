@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_baby_sara/widgets/custom_show_flush_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:open_baby_sara/app/routes/navigation_wrapper.dart';
+import 'package:open_baby_sara/blocs/auth/auth_bloc.dart';
 import 'package:open_baby_sara/blocs/caregiver/caregiver_bloc.dart';
 import 'package:open_baby_sara/data/repositories/locator.dart';
 import 'package:open_baby_sara/data/services/firebase/auth_service.dart';
@@ -46,8 +47,10 @@ class _CaregiverSignInPageState extends State<CaregiverSignInPage> {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(buildCustomSnackBar(state.message));
-          Navigator.of(context).pushReplacement(
+          context.read<AuthBloc>().add(AppStarted());
+          Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (_) => NavigationWrapper()),
+            (route) => false,
           );
         } else if (state is CaregiverError) {
           showCustomFlushbar(

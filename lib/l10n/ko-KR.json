@@ -656,6 +656,7 @@
   "last_feed": "마지막 수유",
   "woke_up_at": "일어난 시간",
   "last_pump": "마지막 펌핑",
+  "last_sleep": "마지막 수면",
   "tooth": "이빨",
   "caregiver_first_name": "보호자 이름",
   "Check-up": "검진",
@@ -737,5 +738,21 @@
   "today_insight_empty": "오늘 기록이 없어요. 첫 번째 활동을 추가해보세요! 👶",
   "today_insight_other_activities": "{name} 오늘: {activities} 👶",
   "no_activities_with_filter": "이 필터에 해당하는 활동이 없습니다.",
-  "no_activities_date_range": "선택한 날짜 범위에 활동이 없습니다."
+  "no_activities_date_range": "선택한 날짜 범위에 활동이 없습니다.",
+  "reset_email_sent_title": "이메일 전송됨!",
+  "reset_email_sent_message": "비밀번호 재설정 링크가 이메일로 전송되었습니다. 받은 편지함을 확인해 주세요.",
+
+  "notif_sleep_title": "수면 기록 시간 🌙",
+  "notif_sleep_body": "{name}이(가) 깨어 있은 지 꽤 됐어요 — 낮잠을 기록해 보세요.",
+  "notif_feed_title": "수유 시간인가요? 🍼",
+  "notif_feed_body": "{name}의 마지막 수유 이후 시간이 지났어요. 탭하여 기록하세요.",
+  "notif_milestone_title": "{name}이(가) {month}개월이 됐어요! 🌟",
+  "notif_milestone_body": "이번 달 발달 이정표를 확인하고 {name}의 성장을 축하하세요.",
+  "notif_settings_title": "알림 설정",
+  "notif_sleep_reminders": "수면 알림",
+  "notif_sleep_reminders_desc": "깨어 있는 시간 후 수면 기록 알림",
+  "notif_feed_reminders": "수유 알림",
+  "notif_feed_reminders_desc": "몇 시간 후 수유 기록 알림",
+  "notif_milestone_notifications": "월별 이정표",
+  "notif_milestone_notifications_desc": "매달 성장을 축하하세요"
 }

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pump_widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/pump_widget_background"
+    android:padding="14dp"
+    android:gravity="start">
+
+    <!-- Başlık: 🍼 + "Pump" etiketi -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🍼"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_pump_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pump"
+            android:textColor="#3D3D3D"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginStart="4dp" />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Timer (çalışırken) -->
+    <Chronometer
+        android:id="@+id/chrono_pump"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FF6F91"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <!-- Durdurma ipucu -->
+    <TextView
+        android:id="@+id/tv_stop_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tap to pause"
+        android:textColor="#888888"
+        android:textSize="10sp"
+        android:visibility="gone" />
+
+    <!-- Son pump bilgisi (duruyorken, veri varsa) -->
+    <TextView
+        android:id="@+id/tv_last_pump_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last pump"
+        android:textColor="#888888"
+        android:textSize="10sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_last_pump_ago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3D3D3D"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <!-- Başlat ipucu (hiç veri yoksa) -->
+    <TextView
+        android:id="@+id/tv_start_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tap to start"
+        android:textColor="#888888"
+        android:textSize="11sp"
+        android:visibility="gone" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

@@ -82,6 +82,7 @@ class _CustomFeedTrackerBottomSheetState
 
   @override
   void initState() {
+    super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       setState(() {}); // Update UI when tab changes
@@ -239,7 +240,6 @@ class _CustomFeedTrackerBottomSheetState
     notesBottleFeedController.addListener(_onBottleFeedNotesChanged);
     notesController.addListener(_onBreastfeedNotesChanged);
 
-    super.initState();
     getIt<AnalyticsService>().logScreenView('FeedActivityTracker');
   }
 
@@ -415,10 +415,11 @@ class _CustomFeedTrackerBottomSheetState
     final String activityID =
         widget.isEdit ? widget.existingActivity!.activityID : const Uuid().v4();
 
-    final String activityType =
-        _tabController.index == 1
+    final String activityType = widget.isEdit
+        ? widget.existingActivity!.activityType
+        : (_tabController.index == 1
             ? ActivityType.bottleFeed.name
-            : ActivityType.breastFeed.name;
+            : ActivityType.breastFeed.name);
 
     // Validation for bottle feed
     if (_tabController.index == 1) {
@@ -1391,82 +1392,99 @@ class _CustomFeedTrackerBottomSheetState
   }
 
   Widget _buildLeftSideInfoBox() {
-    return BlocBuilder<
+    // Anti-pattern fix: state mutasyonu BlocListener'da, BlocBuilder sadece UI render eder
+    return BlocListener<
       leftBreastfeed.BreasfeedLeftSideTimerBloc,
       leftBreastfeed.BreasfeedLeftSideTimerState
     >(
-      builder: (context, state) {
+      listener: (context, state) {
         if (state is leftBreastfeed.TimerStopped &&
             state.activityType == 'leftPumpTimer') {
-          leftSideEndTime = state.endTime;
-          leftSideTotalTime = state.duration;
-          if (state.startTime != null) {
-            leftSideStartTime = state.startTime;
-          }
-        }
-        if (state is leftBreastfeed.TimerRunning &&
+          setState(() {
+            leftSideEndTime = state.endTime;
+            leftSideTotalTime = state.duration;
+            if (state.startTime != null) leftSideStartTime = state.startTime;
+          });
+        } else if (state is leftBreastfeed.TimerRunning &&
             state.activityType == 'leftPumpTimer') {
-          leftSideEndTime = null;
-          leftSideStartTime = state.startTime;
-          leftSideTotalTime = state.duration;
+          setState(() {
+            leftSideEndTime = null;
+            leftSideStartTime = state.startTime;
+            leftSideTotalTime = state.duration;
+          });
+        } else if (state is leftBreastfeed.TimerReset) {
+          setState(() {
+            leftSideEndTime = null;
+            leftSideStartTime = null;
+            leftSideTotalTime = null;
+          });
         }
-        if (state is leftBreastfeed.TimerReset) {
-          leftSideEndTime = null;
-          leftSideStartTime = null;
-          leftSideTotalTime = null;
-        }
-        final isLeftTimerRunning = state is leftBreastfeed.TimerRunning && 
-                                     state.activityType == 'leftPumpTimer';
-
-        return _buildInfoBox(
-          'left',
-          context.tr("left_side"),
-          leftSideStartTime,
-          leftSideEndTime,
-          leftSideTotalTime,
-          !isLeftTimerRunning,
-        );
       },
+      child: BlocBuilder<
+        leftBreastfeed.BreasfeedLeftSideTimerBloc,
+        leftBreastfeed.BreasfeedLeftSideTimerState
+      >(
+        builder: (context, state) {
+          final isLeftTimerRunning = state is leftBreastfeed.TimerRunning &&
+              state.activityType == 'leftPumpTimer';
+          return _buildInfoBox(
+            'left',
+            context.tr("left_side"),
+            leftSideStartTime,
+            leftSideEndTime,
+            leftSideTotalTime,
+            !isLeftTimerRunning,
+          );
+        },
+      ),
     );
   }
 
   Widget _buildRightSideInfoBox() {
-    return BlocBuilder<
+    return BlocListener<
       rightBreastfeed.BreastfeedRightSideTimerBloc,
       rightBreastfeed.BreastfeedRightSideTimerState
     >(
-      builder: (context, state) {
+      listener: (context, state) {
         if (state is rightBreastfeed.TimerStopped &&
             state.activityType == 'rightPumpTimer') {
-          rightSideEndTime = state.endTime;
-          rightSideTotalTime = state.duration;
-          if (state.startTime != null) {
-            rightSideStartTime = state.startTime;
-          }
-        }
-        if (state is rightBreastfeed.TimerRunning &&
+          setState(() {
+            rightSideEndTime = state.endTime;
+            rightSideTotalTime = state.duration;
+            if (state.startTime != null) rightSideStartTime = state.startTime;
+          });
+        } else if (state is rightBreastfeed.TimerRunning &&
             state.activityType == 'rightPumpTimer') {
-          rightSideEndTime = null;
-          rightSideStartTime = state.startTime;
-          rightSideTotalTime = state.duration;
+          setState(() {
+            rightSideEndTime = null;
+            rightSideStartTime = state.startTime;
+            rightSideTotalTime = state.duration;
+          });
+        } else if (state is rightBreastfeed.TimerReset) {
+          setState(() {
+            rightSideEndTime = null;
+            rightSideStartTime = null;
+            rightSideTotalTime = null;
+          });
         }
-        if (state is rightBreastfeed.TimerReset) {
-          rightSideEndTime = null;
-          rightSideStartTime = null;
-          rightSideTotalTime = null;
-        }
-        final isRightTimerRunning = state is rightBreastfeed.TimerRunning && 
-                                       state.activityType == 'rightPumpTimer';
-
-        return _buildInfoBox(
-          'right',
-          context.tr("right_side"),
-          rightSideStartTime,
-          rightSideEndTime,
-          rightSideTotalTime,
-          !isRightTimerRunning,
-        );
       },
+      child: BlocBuilder<
+        rightBreastfeed.BreastfeedRightSideTimerBloc,
+        rightBreastfeed.BreastfeedRightSideTimerState
+      >(
+        builder: (context, state) {
+          final isRightTimerRunning = state is rightBreastfeed.TimerRunning &&
+              state.activityType == 'rightPumpTimer';
+          return _buildInfoBox(
+            'right',
+            context.tr("right_side"),
+            rightSideStartTime,
+            rightSideEndTime,
+            rightSideTotalTime,
+            !isRightTimerRunning,
+          );
+        },
+      ),
     );
   }
 

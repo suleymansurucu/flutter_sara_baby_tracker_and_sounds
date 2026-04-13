@@ -658,6 +658,7 @@
   "last_feed": "Son beslenme",
   "woke_up_at": "Şu saatte uyandı",
   "last_pump": "Son pump",
+  "last_sleep": "Son uyku",
   "tooth": "Diş",
   "caregiver_first_name": "Bakıcı Adı",
   "Check-up": "Kontrol",
@@ -747,5 +748,21 @@
   "today_insight_empty": "Bugün henüz kayıt yok. İlk aktiviteyi ekle! 👶",
   "today_insight_other_activities": "{name} bugün: {activities} 👶",
   "no_activities_with_filter": "Bu filtre için aktivite bulunamadı.",
-  "no_activities_date_range": "Seçilen tarih aralığında aktivite yok."
+  "no_activities_date_range": "Seçilen tarih aralığında aktivite yok.",
+  "reset_email_sent_title": "E-posta Gönderildi!",
+  "reset_email_sent_message": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi. Lütfen gelen kutunuzu kontrol edin.",
+
+  "notif_sleep_title": "Uyku kaydı zamanı 🌙",
+  "notif_sleep_body": "{name} bir süredir uyanık — bir uyku kaydı eklemek ister misiniz?",
+  "notif_feed_title": "Beslenme vakti mi? 🍼",
+  "notif_feed_body": "{name}'in son beslenme kaydından bu yana zaman geçti. Kaydetmek için dokunun.",
+  "notif_milestone_title": "{name} {month} aylık oldu! 🌟",
+  "notif_milestone_body": "Bu ayki gelişim basamaklarına göz atın ve {name}'in büyümesini kutlayın.",
+  "notif_settings_title": "Bildirim Ayarları",
+  "notif_sleep_reminders": "Uyku Hatırlatıcıları",
+  "notif_sleep_reminders_desc": "Uyanık geçen süreden sonra uyku kaydı hatırlatıcısı",
+  "notif_feed_reminders": "Beslenme Hatırlatıcıları",
+  "notif_feed_reminders_desc": "Birkaç saat sonra beslenme kaydı hatırlatıcısı",
+  "notif_milestone_notifications": "Aylık Gelişim Bildirimleri",
+  "notif_milestone_notifications_desc": "Her büyüme ayını kutlayın"
 }

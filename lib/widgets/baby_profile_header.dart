@@ -24,6 +24,7 @@ class _BabyProfileHeaderState extends State<BabyProfileHeader> {
   BabyModel? _cachedBaby;
   String? _cachedImagePath;
   int _imageVersion = 0;
+  final GlobalKey _headerKey = GlobalKey();
 
   @override
   void initState() {
@@ -60,6 +61,79 @@ class _BabyProfileHeaderState extends State<BabyProfileHeader> {
       age += '$days ${context.tr('day')}${days > 1 ? 's' : ''}';
     }
     return age.isEmpty ? context.tr('0_day') : age;
+  }
+
+  Future<void> _showBabyDropdown(
+      BuildContext context, BabyModel? selectedBaby) async {
+    final RenderBox box =
+        _headerKey.currentContext!.findRenderObject() as RenderBox;
+    final Offset offset = box.localToGlobal(Offset.zero);
+    final Size size = box.size;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    final result = await showMenu<BabyModel>(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        offset.dx,
+        offset.dy + size.height + 4,
+        screenWidth - (offset.dx + size.width),
+        0,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      elevation: 8,
+      items: widget.babiesList.map((baby) {
+        final isSelected = baby.babyID == selectedBaby?.babyID;
+        return PopupMenuItem<BabyModel>(
+          value: baby,
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 14.sp,
+                backgroundColor: AppColors.historyPink.withValues(alpha: 0.15),
+                child: Text(
+                  baby.firstName.isNotEmpty
+                      ? baby.firstName[0].toUpperCase()
+                      : '?',
+                  style: TextStyle(
+                    color: AppColors.historyPink,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Expanded(
+                child: Text(
+                  baby.firstName,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              if (isSelected)
+                Padding(
+                  padding: EdgeInsets.only(left: 8.w),
+                  child: Icon(
+                    Icons.check_rounded,
+                    color: AppColors.historyPink,
+                    size: 16.sp,
+                  ),
+                ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+
+    if (result != null && mounted) {
+      this.context.read<BabyBloc>().add(SelectBaby(selectBabyModel: result));
+      await SharedPrefsHelper.saveSelectedBabyID(result.babyID);
+    }
   }
 
   Future<void> _pickAndSaveImage(String babyID) async {
@@ -101,91 +175,69 @@ class _BabyProfileHeaderState extends State<BabyProfileHeader> {
         final selectedBaby = _cachedBaby;
         final imagePath = _cachedImagePath;
 
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _AvatarWithPicker(
-              key: ValueKey(_imageVersion),
-              babyID: selectedBaby?.babyID,
-              imagePath: imagePath,
-              onTap: () {
-                if (selectedBaby != null) {
-                  _pickAndSaveImage(selectedBaby.babyID);
-                }
-              },
-            ),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  DropdownButtonHideUnderline(
-                    child: DropdownButton<BabyModel>(
-                      key: ValueKey(selectedBaby?.babyID),
-                      value: selectedBaby,
-                      isExpanded: false,
-                      icon: const SizedBox.shrink(),
-                      selectedItemBuilder: (context) {
-                        return widget.babiesList.map((baby) {
-                          return Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                baby.firstName,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18.sp,
-                                  color: Colors.grey[850],
-                                ),
+        return Padding(
+          padding: EdgeInsets.only(left: 8.w, top: 4.h, bottom: 4.h),
+          child: Row(
+            key: _headerKey,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _AvatarWithPicker(
+                key: ValueKey(_imageVersion),
+                babyID: selectedBaby?.babyID,
+                imagePath: imagePath,
+                onTap: () {
+                  if (selectedBaby != null) {
+                    _pickAndSaveImage(selectedBaby.babyID);
+                  }
+                },
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: () => _showBabyDropdown(context, selectedBaby),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              selectedBaby?.firstName ?? '',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 18.sp,
+                                color: Colors.grey[850],
                               ),
-                              SizedBox(width: 2.w),
-                              Icon(
-                                Icons.arrow_drop_down_rounded,
-                                color: AppColors.historyPink,
-                                size: 22.sp,
-                              ),
-                            ],
-                          );
-                        }).toList();
-                      },
-                      items: widget.babiesList.map((baby) {
-                        return DropdownMenuItem<BabyModel>(
-                          value: baby,
-                          child: Text(
-                            baby.firstName,
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (newBaby) async {
-                        if (newBaby != null) {
-                          context
-                              .read<BabyBloc>()
-                              .add(SelectBaby(selectBabyModel: newBaby));
-                          await SharedPrefsHelper.saveSelectedBabyID(
-                            newBaby.babyID,
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                  if (selectedBaby != null)
-                    Text(
-                      _calculateAge(selectedBaby.dateTime),
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.grey[500],
-                        fontWeight: FontWeight.w500,
+                          SizedBox(width: 4.w),
+                          Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            color: AppColors.historyPink,
+                            size: 22.sp,
+                          ),
+                        ],
                       ),
                     ),
-                ],
+                    if (selectedBaby != null) ...[
+                      SizedBox(height: 2.h),
+                      Text(
+                        _calculateAge(selectedBaby.dateTime),
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          color: Colors.grey[400],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

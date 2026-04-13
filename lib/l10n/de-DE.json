@@ -656,6 +656,7 @@
   "last_feed": "Letzte Fütterung",
   "woke_up_at": "Aufgewacht um",
   "last_pump": "Letzte Pumpe",
+  "last_sleep": "Letzter Schlaf",
   "tooth": "Zahn",
   "caregiver_first_name": "Vorname der Betreuungsperson",
   "Check-up": "Untersuchung",
@@ -737,5 +738,21 @@
   "today_insight_empty": "Heute noch keine Einträge. Erste Aktivität hinzufügen! 👶",
   "today_insight_other_activities": "{name} heute: {activities} 👶",
   "no_activities_with_filter": "Keine Aktivitäten für diesen Filter.",
-  "no_activities_date_range": "Keine Aktivitäten im gewählten Zeitraum."
+  "no_activities_date_range": "Keine Aktivitäten im gewählten Zeitraum.",
+  "reset_email_sent_title": "E-Mail gesendet!",
+  "reset_email_sent_message": "Ein Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail gesendet. Bitte überprüfen Sie Ihren Posteingang.",
+
+  "notif_sleep_title": "Schlaf eintragen 🌙",
+  "notif_sleep_body": "{name} ist schon eine Weile wach — tippen Sie, um einen Schlaf zu erfassen.",
+  "notif_feed_title": "Stillzeit? 🍼",
+  "notif_feed_body": "Es ist eine Weile her seit {name}'s letzter Mahlzeit. Tippen zum Erfassen.",
+  "notif_milestone_title": "{name} ist {month} Monate alt! 🌟",
+  "notif_milestone_body": "Sehen Sie sich die Meilensteine dieses Monats an und feiern Sie {name}'s Wachstum.",
+  "notif_settings_title": "Benachrichtigungseinstellungen",
+  "notif_sleep_reminders": "Schlaf-Erinnerungen",
+  "notif_sleep_reminders_desc": "Erinnerung zum Erfassen des Schlafs nach Wachzeit",
+  "notif_feed_reminders": "Fütterungs-Erinnerungen",
+  "notif_feed_reminders_desc": "Erinnerung zum Erfassen der Mahlzeit nach ein paar Stunden",
+  "notif_milestone_notifications": "Monatliche Meilensteine",
+  "notif_milestone_notifications_desc": "Jeden Wachstumsmonat feiern"
 }

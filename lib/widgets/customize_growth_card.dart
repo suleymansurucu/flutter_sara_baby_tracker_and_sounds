@@ -48,7 +48,7 @@ class _CustomizeGrowthCardState extends State<CustomizeGrowthCard> {
             borderRadius: BorderRadius.circular(16.r),
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             child: Row(
               children: [
                 /// Left Image

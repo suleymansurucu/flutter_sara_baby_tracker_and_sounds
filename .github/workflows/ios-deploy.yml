@@ -1,0 +1,47 @@
+name: iOS Deploy to TestFlight
+
+on:
+  workflow_dispatch: # Sadece manuel olarak (elle) tetiklenir
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy iOS
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          
+      - name: Flutter Pub Get
+        run: flutter pub get
+        
+      - name: Flutter Analyze
+        run: flutter analyze
+
+      - name: Install Apple Certificate & Provisioning Profile
+        # Not: Eger Fastlane Match kullaniyorsaniz burayi atlayabilirsiniz.
+        # Basitlik adina Fastlane ile otomatik yonetimi (cert/sigh veya API key) tercih ediyoruz.
+        run: echo "Skipping manual cert installation, Fastlane will use App Store Connect API."
+
+      - name: Build iOS App
+        run: flutter build ios --release --no-codesign
+
+      - name: Setup Fastlane & Deploy to TestFlight
+        working-directory: ios
+        env:
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          # API Key'i olusturuyoruz
+          mkdir -p fastlane/
+          echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > fastlane/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
+          
+          # Fastlane calistiriyoruz
+          bundle install
+          bundle exec fastlane beta

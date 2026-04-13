@@ -22,7 +22,7 @@ class BreastfeedLeftSideTimer extends StatefulWidget {
 }
 
 class _BreastfeedLeftSideTimerState extends State<BreastfeedLeftSideTimer>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   Timer? _timer;
   Duration _duration = Duration.zero;
   bool _isRunning = false;
@@ -32,6 +32,7 @@ class _BreastfeedLeftSideTimerState extends State<BreastfeedLeftSideTimer>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
     context.read<BreasfeedLeftSideTimerBloc>().add(
       LoadTimerFromLocalDatabase(activityType: widget.activityType),
@@ -76,7 +77,17 @@ class _BreastfeedLeftSideTimerState extends State<BreastfeedLeftSideTimer>
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && mounted) {
+      context.read<BreasfeedLeftSideTimerBloc>().add(
+        LoadTimerFromLocalDatabase(activityType: widget.activityType),
+      );
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _timer?.cancel();
     _animationController.dispose();
     super.dispose();

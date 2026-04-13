@@ -656,6 +656,7 @@
   "last_feed": "آخر رضعة",
   "woke_up_at": "استيقظ في",
   "last_pump": "آخر ضخ",
+  "last_sleep": "آخر نوم",
   "tooth": "سن",
   "caregiver_first_name": "اسم المربي الأول",
   "Check-up": "فحص",
@@ -736,5 +737,21 @@
   "today_insight_empty": "لا سجلات اليوم بعد. أضيفي أول نشاط! 👶",
   "today_insight_other_activities": "{name} اليوم: {activities} 👶",
   "no_activities_with_filter": "لا توجد أنشطة لهذا الفلتر.",
-  "no_activities_date_range": "لا توجد أنشطة في الفترة المحددة."
+  "no_activities_date_range": "لا توجد أنشطة في الفترة المحددة.",
+  "reset_email_sent_title": "تم إرسال البريد!",
+  "reset_email_sent_message": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني. يرجى التحقق من صندوق الوارد.",
+
+  "notif_sleep_title": "حان وقت تسجيل النوم 🌙",
+  "notif_sleep_body": "{name} مستيقظ منذ فترة — انقر لتسجيل قيلولة.",
+  "notif_feed_title": "وقت الرضاعة؟ 🍼",
+  "notif_feed_body": "مضى وقت منذ آخر وجبة لـ{name}. انقر لتسجيلها.",
+  "notif_milestone_title": "{name} عمره {month} أشهر! 🌟",
+  "notif_milestone_body": "تحقق من معالم هذا الشهر واحتفل بنمو {name}.",
+  "notif_settings_title": "إعدادات الإشعارات",
+  "notif_sleep_reminders": "تذكيرات النوم",
+  "notif_sleep_reminders_desc": "تذكير بتسجيل النوم بعد وقت الاستيقاظ",
+  "notif_feed_reminders": "تذكيرات الرضاعة",
+  "notif_feed_reminders_desc": "تذكير بتسجيل الوجبة بعد بضع ساعات",
+  "notif_milestone_notifications": "معالم شهرية",
+  "notif_milestone_notifications_desc": "احتفل بكل شهر من النمو"
 }

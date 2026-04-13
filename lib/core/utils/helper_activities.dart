@@ -118,10 +118,33 @@ String? getLastFeedSummary(
   final timeText = formatSmartDate(last.activityDateTime, context);
   if (timeText == null) return '➕\n${context.tr('tap_to_start_only')}';
 
+  // Bug #2 fix: show left/right side duration for breastFeed activities
+  if (last.activityType == 'breastFeed') {
+    final leftMs = (last.data['leftSideTotalTime'] as num?)?.toInt() ?? 0;
+    final rightMs = (last.data['rightSideTotalTime'] as num?)?.toInt() ?? 0;
+    final parts = <String>[];
+    if (leftMs > 0) {
+      final d = Duration(milliseconds: leftMs);
+      final m = d.inMinutes;
+      final s = d.inSeconds % 60;
+      parts.add('L: ${m > 0 ? '${m}m ' : ''}${s}s');
+    }
+    if (rightMs > 0) {
+      final d = Duration(milliseconds: rightMs);
+      final m = d.inMinutes;
+      final s = d.inSeconds % 60;
+      parts.add('R: ${m > 0 ? '${m}m ' : ''}${s}s');
+    }
+    if (parts.isNotEmpty) {
+      return '${parts.join(' · ')}\n$timeText';
+    }
+    return '${context.tr('last_feed')} at\n$timeText';
+  }
+
   final amount = last.data['totalAmount']?.toString() ?? '';
   final unit = last.data['totalUnit']?.toString() ?? '';
 
-  if (amount.isNotEmpty && unit.isNotEmpty) {
+  if (amount.isNotEmpty && unit.isNotEmpty && amount != '0' && amount != '0.0') {
     return '${context.tr('last_feed')} $amount $unit\nat $timeText';
   }
 

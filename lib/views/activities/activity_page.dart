@@ -125,6 +125,8 @@ class _ActivityPageState extends State<ActivityPage> {
                                   ///
                                   BabyProfileHeader(babiesList: babiesList),
 
+                                  SizedBox(height: 12.h),
+
                                   ///
                                   /// Today Summary
                                   ///
@@ -185,7 +187,7 @@ class _ActivityPageState extends State<ActivityPage> {
                                   ///
                                   SizedBox(
                                     width: double.infinity,
-                                    height: 110.h,
+                                    height: 88.h,
                                     child: CustomizeGrowthCard(
                                       color: AppColors.growthColor,
                                       title: 'Weight',

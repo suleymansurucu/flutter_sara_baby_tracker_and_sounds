@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sleep_widget_description">Track your baby\'s sleep</string>
+    <string name="breastfeed_widget_description">Track breastfeeding left and right side</string>
+    <string name="pump_widget_description">Track pumping sessions</string>
+</resources>

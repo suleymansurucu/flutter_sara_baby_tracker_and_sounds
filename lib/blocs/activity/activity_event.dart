@@ -5,8 +5,9 @@ sealed class ActivityEvent {}
 
 class AddActivity extends ActivityEvent {
   final ActivityModel activityModel;
+  final String babyName;
 
-  AddActivity({required this.activityModel});
+  AddActivity({required this.activityModel, this.babyName = ''});
 }
 
 class StartAutoSync extends ActivityEvent {}

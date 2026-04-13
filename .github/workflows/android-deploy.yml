@@ -1,0 +1,54 @@
+name: Android Deploy to Play Store
+
+on:
+  workflow_dispatch: # Sadece manuel olarak (elle) tetiklenir
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy Android
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          
+      - name: Flutter Pub Get
+        run: flutter pub get
+        
+      - name: Flutter Analyze
+        run: flutter analyze
+
+      - name: Setup Android Keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE }}
+        run: |
+          echo $ANDROID_KEYSTORE_BASE64 | base64 --decode > android/app/upload-keystore.jks
+
+      - name: Create key.properties
+        env:
+          KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
+        run: |
+          echo "$KEY_PROPERTIES" > android/key.properties
+
+      - name: Build Android App Bundle
+        run: flutter build appbundle
+
+      - name: Upload to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.suleymansurucu.sarababy
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          track: internal # Bunu 'production' olarak degistirebilirsiniz
+          status: completed

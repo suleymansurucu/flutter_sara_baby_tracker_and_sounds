@@ -24,12 +24,18 @@ class BabyRepositoryImpl extends BabyRepository {
     if (userID == null) return null;
 
     try {
-      //TODO: Baby Null check
       if (babyID == null) {
+        final userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .get();
+        final parentID = userDoc.data()?['parentID'];
+        if (parentID == null) return null;
+
         final querySnapshot =
             await _firestore
                 .collection("babies")
-                .where('userID', isEqualTo: userID)
+                .where('parentID', isEqualTo: parentID)
                 .limit(1)
                 .get();
 
@@ -55,11 +61,15 @@ class BabyRepositoryImpl extends BabyRepository {
   Future<List<BabyModel>> getBabies() async {
     final String? userID = _auth.currentUser?.uid;
     if (userID == null) return [];
-    var userMap =
-        (await FirebaseFirestore.instance.collection('users').doc(userID).get())
-            .data();
-    final String parentID = userMap!['parentID'];
     try {
+      var userMap =
+          (await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(userID)
+                  .get())
+              .data();
+      final String? parentID = userMap?['parentID'] as String?;
+      if (parentID == null || parentID.isEmpty) return [];
       var snapshot =
           await _firestore
               .collection("babies")
@@ -70,7 +80,7 @@ class BabyRepositoryImpl extends BabyRepository {
         return BabyModel.fromMap(data);
       }).toList();
     } catch (e) {
-      print("Error fetching baby: $e");
+      print("Error fetching babies: $e");
       return [];
     }
   }

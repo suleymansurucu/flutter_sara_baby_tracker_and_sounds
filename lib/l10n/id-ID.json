@@ -657,6 +657,7 @@
   "last_feed": "Feed terakhir",
   "woke_up_at": "Bangun di",
   "last_pump": "Pompa terakhir",
+  "last_sleep": "Tidur terakhir",
   "tooth": "Gigi",
   "caregiver_first_name": "Nama depan pengasuh",
   "Check-up": "Pemeriksaan",
@@ -738,5 +739,21 @@
   "today_insight_empty": "Belum ada catatan hari ini. Tambahkan aktivitas pertama! 👶",
   "today_insight_other_activities": "{name} hari ini: {activities} 👶",
   "no_activities_with_filter": "Tidak ada aktivitas untuk filter ini.",
-  "no_activities_date_range": "Tidak ada aktivitas dalam rentang tanggal."
+  "no_activities_date_range": "Tidak ada aktivitas dalam rentang tanggal.",
+  "reset_email_sent_title": "Email Terkirim!",
+  "reset_email_sent_message": "Tautan reset kata sandi telah dikirim ke email Anda. Silakan periksa kotak masuk Anda.",
+
+  "notif_sleep_title": "Waktunya catat tidur 🌙",
+  "notif_sleep_body": "{name} sudah lama terjaga — ketuk untuk mencatat tidur siang.",
+  "notif_feed_title": "Waktunya makan? 🍼",
+  "notif_feed_body": "Sudah lama sejak pemberian makan {name} terakhir. Ketuk untuk mencatat.",
+  "notif_milestone_title": "{name} sudah {month} bulan! 🌟",
+  "notif_milestone_body": "Lihat tonggak perkembangan bulan ini dan rayakan pertumbuhan {name}.",
+  "notif_settings_title": "Pengaturan Notifikasi",
+  "notif_sleep_reminders": "Pengingat Tidur",
+  "notif_sleep_reminders_desc": "Ingatkan saya untuk mencatat tidur setelah waktu terjaga",
+  "notif_feed_reminders": "Pengingat Makan",
+  "notif_feed_reminders_desc": "Ingatkan saya untuk mencatat makan setelah beberapa jam",
+  "notif_milestone_notifications": "Tonggak Bulanan",
+  "notif_milestone_notifications_desc": "Rayakan setiap bulan pertumbuhan"
 }

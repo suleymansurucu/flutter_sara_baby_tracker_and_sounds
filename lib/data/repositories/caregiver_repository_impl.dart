@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:open_baby_sara/data/models/invite_model.dart';
 import 'package:open_baby_sara/data/models/user_model.dart';
 import 'package:open_baby_sara/data/repositories/caregiver_repository.dart';
@@ -45,58 +44,46 @@ class CaregiverRepositoryImpl extends CaregiverRepository {
           'This email is already linked to an active caregiver. Please sign in.',
         );
       } else if (caregiver.docs.isNotEmpty && caregiverActive.docs.isEmpty) {
-        try {
-          var caregiverAuth = await _auth.createUserWithEmailAndPassword(
-            email: email,
-            password: password,
+        var caregiverAuth = await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        if (caregiverAuth.user?.uid != null) {
+          var caregiverMap = caregiver.docs.first.data();
+          var userID = caregiverMap['senderID'];
+          final userDoc =
+              await _firestore.collection('users').doc(userID).get();
+          List<dynamic> caregivers = userDoc.data()?['caregivers'] ?? [];
+          String parentID = userDoc.data()!['parentID'];
+          caregivers.removeWhere((cg) => cg['receiverEmail'] == email);
+          caregivers.add(
+            InviteModel(
+              senderID: userID,
+              receiverEmail: email,
+              status: 'active',
+              parentID: parentID,
+              firstName: firstName,
+              createdAt: DateTime.now(),
+              caregiverID: caregiverAuth.user!.uid,
+            ).toMap(),
           );
-          if (caregiverAuth.user?.uid != null) {
-            var caregiverMap = caregiver.docs.first.data();
-            var userID = caregiverMap['senderID'];
-            try {
-              final userDoc =
-                  await _firestore.collection('users').doc(userID).get();
-              List<dynamic> caregivers = userDoc.data()?['caregivers'] ?? [];
-              String parentID = userDoc.data()!['parentID'];
-              caregivers.removeWhere((cg) => cg['receiverEmail'] == email);
-              caregivers.add(
-                InviteModel(
-                  senderID: userID,
-                  receiverEmail: email,
-                  status: 'active',
-                  parentID: parentID,
-                  firstName: firstName,
-                  createdAt: DateTime.now(),
-                  caregiverID: caregiverAuth.user!.uid,
-                ).toMap(),
-              );
-              try {
-                await _firestore.collection('users').doc(userID).update({
-                  'caregivers': caregivers,
-                });
-                await _firestore
-                    .collection('invites')
-                    .doc(caregiverMap['caregiverID'])
-                    .delete();
-                UserModel userModel = UserModel(
-                  userID: caregiverAuth.user!.uid,
-                  email: email,
-                  firstName: firstName,
-                  parentID: parentID,
-                );
-                await _firestore
-                    .collection('users')
-                    .doc(caregiverAuth.user!.uid)
-                    .set(userModel.toMap());
-              } catch (e) {
-                debugPrint(e.toString());
-              }
-            } catch (e) {
-              debugPrint(e.toString());
-            }
-          }
-        } catch (e) {
-          debugPrint(e.toString());
+          await _firestore.collection('users').doc(userID).update({
+            'caregivers': caregivers,
+          });
+          await _firestore
+              .collection('invites')
+              .doc(caregiverMap['caregiverID'])
+              .delete();
+          UserModel userModel = UserModel(
+            userID: caregiverAuth.user!.uid,
+            email: email,
+            firstName: firstName,
+            parentID: parentID,
+          );
+          await _firestore
+              .collection('users')
+              .doc(caregiverAuth.user!.uid)
+              .set(userModel.toMap());
         }
       }
     } on FirebaseAuthException catch (e) {
@@ -141,49 +128,39 @@ class CaregiverRepositoryImpl extends CaregiverRepository {
 
         var caregiverMap = caregiver.docs.first.data();
         var userID = caregiverMap['senderID'];
-        try {
-          final userDoc =
-              await _firestore.collection('users').doc(userID).get();
-          List<dynamic> caregivers = userDoc.data()?['caregivers'] ?? [];
-          String parentID = userDoc.data()!['parentID'];
-          caregivers.removeWhere((cg) => cg['receiverEmail'] == email);
-          caregivers.add(
-            InviteModel(
-              senderID: userID,
-              receiverEmail: email,
-              status: 'active',
-              parentID: parentID,
-              firstName: firstName,
-              createdAt: DateTime.now(),
-              caregiverID: currentUser.uid,
-            ).toMap(),
-          );
-          try {
-            await _firestore.collection('users').doc(userID).update({
-              'caregivers': caregivers,
-            });
-            await _firestore
-                .collection('invites')
-                .doc(caregiverMap['caregiverID'])
-                .delete();
-            UserModel userModel = UserModel(
-              userID: currentUser.uid,
-              email: email,
-              firstName: firstName,
-              parentID: parentID,
-            );
-            await _firestore
-                .collection('users')
-                .doc(currentUser.uid)
-                .set(userModel.toMap());
-          } catch (e) {
-            debugPrint(e.toString());
-            throw Exception('Failed to update caregiver: ${e.toString()}');
-          }
-        } catch (e) {
-          debugPrint(e.toString());
-          throw Exception('Failed to process caregiver: ${e.toString()}');
-        }
+        final userDoc =
+            await _firestore.collection('users').doc(userID).get();
+        List<dynamic> caregivers = userDoc.data()?['caregivers'] ?? [];
+        String parentID = userDoc.data()!['parentID'];
+        caregivers.removeWhere((cg) => cg['receiverEmail'] == email);
+        caregivers.add(
+          InviteModel(
+            senderID: userID,
+            receiverEmail: email,
+            status: 'active',
+            parentID: parentID,
+            firstName: firstName,
+            createdAt: DateTime.now(),
+            caregiverID: currentUser.uid,
+          ).toMap(),
+        );
+        await _firestore.collection('users').doc(userID).update({
+          'caregivers': caregivers,
+        });
+        await _firestore
+            .collection('invites')
+            .doc(caregiverMap['caregiverID'])
+            .delete();
+        UserModel userModel = UserModel(
+          userID: currentUser.uid,
+          email: email,
+          firstName: firstName,
+          parentID: parentID,
+        );
+        await _firestore
+            .collection('users')
+            .doc(currentUser.uid)
+            .set(userModel.toMap());
       }
     } catch (e) {
       throw Exception('Google Sign-In failed. ${e.toString()}');

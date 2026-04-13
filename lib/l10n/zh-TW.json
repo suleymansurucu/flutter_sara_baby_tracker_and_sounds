@@ -656,6 +656,7 @@
   "last_feed": "上次喂食",
   "woke_up_at": "醒来时间",
   "last_pump": "上次泵奶",
+  "last_sleep": "上次睡眠",
   "tooth": "牙齿",
   "caregiver_first_name": "看护人名字",
   "Check-up": "检查",
@@ -737,5 +738,21 @@
   "today_insight_empty": "今天還沒有記錄。新增第一個活動！👶",
   "today_insight_other_activities": "{name} 今天：{activities} 👶",
   "no_activities_with_filter": "此篩選條件無活動記錄。",
-  "no_activities_date_range": "所選日期範圍內無活動記錄。"
+  "no_activities_date_range": "所選日期範圍內無活動記錄。",
+  "reset_email_sent_title": "郵件已送出！",
+  "reset_email_sent_message": "密碼重置連結已發送至您的信箱，請查收。",
+
+  "notif_sleep_title": "記錄睡眠時間到了 🌙",
+  "notif_sleep_body": "{name} 已經醒了一段時間 — 點擊記錄小睡。",
+  "notif_feed_title": "餵食時間到了嗎？ 🍼",
+  "notif_feed_body": "距離 {name} 上次餵食已經過了一段時間。點擊記錄。",
+  "notif_milestone_title": "{name} {month} 個月大了！ 🌟",
+  "notif_milestone_body": "查看本月里程碑，慶祝 {name} 的成長。",
+  "notif_settings_title": "通知設定",
+  "notif_sleep_reminders": "睡眠提醒",
+  "notif_sleep_reminders_desc": "醒來後提醒我記錄睡眠",
+  "notif_feed_reminders": "餵食提醒",
+  "notif_feed_reminders_desc": "幾小時後提醒我記錄餵食",
+  "notif_milestone_notifications": "每月里程碑",
+  "notif_milestone_notifications_desc": "慶祝每個成長月份"
 }

@@ -21,7 +21,7 @@ class PumpLeftSideTimer extends StatefulWidget {
 }
 
 class _PumpLeftSideTimerState extends State<PumpLeftSideTimer>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   Timer? _timer;
   Duration _duration = Duration.zero;
   bool _isRunning = false;
@@ -30,8 +30,8 @@ class _PumpLeftSideTimerState extends State<PumpLeftSideTimer>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     context.read<PumpLeftSideTimerBloc>().add(
       LoadTimerFromLocalDatabase(activityType: widget.activityType),
     );
@@ -75,7 +75,17 @@ class _PumpLeftSideTimerState extends State<PumpLeftSideTimer>
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && mounted) {
+      context.read<PumpLeftSideTimerBloc>().add(
+        LoadTimerFromLocalDatabase(activityType: widget.activityType),
+      );
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _timer?.cancel();
     _animationController.dispose();
     super.dispose();

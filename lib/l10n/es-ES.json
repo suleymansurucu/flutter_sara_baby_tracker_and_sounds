@@ -656,6 +656,7 @@
   "last_feed": "Última alimentación",
   "woke_up_at": "Se despertó a las",
   "last_pump": "Última extracción",
+  "last_sleep": "Último sueño",
   "tooth": "Diente",
   "caregiver_first_name": "Nombre del cuidador",
   "Check-up": "Control",
@@ -737,5 +738,21 @@
   "today_insight_empty": "Sin registros hoy. ¡Añade la primera actividad! 👶",
   "today_insight_other_activities": "{name} hoy: {activities} 👶",
   "no_activities_with_filter": "No hay actividades para este filtro.",
-  "no_activities_date_range": "No hay actividades en el rango de fechas."
+  "no_activities_date_range": "No hay actividades en el rango de fechas.",
+  "reset_email_sent_title": "¡Correo enviado!",
+  "reset_email_sent_message": "Se ha enviado un enlace para restablecer tu contraseña. Por favor, revisa tu bandeja de entrada.",
+
+  "notif_sleep_title": "Hora de registrar el sueño 🌙",
+  "notif_sleep_body": "{name} lleva un rato despierto/a — toca para registrar una siesta.",
+  "notif_feed_title": "¿Hora de comer? 🍼",
+  "notif_feed_body": "Ha pasado un tiempo desde la última toma de {name}. Toca para registrarla.",
+  "notif_milestone_title": "¡{name} tiene {month} meses! 🌟",
+  "notif_milestone_body": "Revisa los hitos de este mes y celebra el crecimiento de {name}.",
+  "notif_settings_title": "Ajustes de notificaciones",
+  "notif_sleep_reminders": "Recordatorios de sueño",
+  "notif_sleep_reminders_desc": "Recuérdame registrar el sueño después del tiempo despierto",
+  "notif_feed_reminders": "Recordatorios de alimentación",
+  "notif_feed_reminders_desc": "Recuérdame registrar la toma después de unas horas",
+  "notif_milestone_notifications": "Hitos mensuales",
+  "notif_milestone_notifications_desc": "Celebra cada mes de crecimiento"
 }

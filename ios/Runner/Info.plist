@@ -5,7 +5,10 @@
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>audio</string>
+			<string>fetch</string>
 		</array>
+		<key>NSUserNotificationUsageDescription</key>
+		<string>Sara Baby sends you gentle reminders to log sleep and feedings, and celebrates your baby's monthly milestones.</string>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
 		<key>CFBundleDevelopmentRegion</key>
@@ -62,18 +65,18 @@
 		</array>
 		<key>NSLocalNetworkUsageDescription</key>
 		<string>This app requires access to the local network to support debugging and communication features.</string>
-	<key>UIStatusBarHidden</key>
-	<false/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.880549897239-82h5fcdncg3ntr6tq4l30vtpc0anse38</string>
-			</array>
-		</dict>
-	</array>
-</dict>
+		<key>UIStatusBarHidden</key>
+		<false/>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>com.googleusercontent.apps.880549897239-82h5fcdncg3ntr6tq4l30vtpc0anse38</string>
+				</array>
+			</dict>
+		</array>
+	</dict>
 </plist>

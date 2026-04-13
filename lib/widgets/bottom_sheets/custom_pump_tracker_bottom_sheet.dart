@@ -87,6 +87,7 @@ class _CustomPumpTrackerBottomSheetState
 
   @override
   void initState() {
+    super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       setState(() {}); // Update UI when tab changes
@@ -291,7 +292,6 @@ class _CustomPumpTrackerBottomSheetState
     notesTotalController.addListener(_onTotalNotesChanged);
     notesController.addListener(_onLeftRightNotesChanged);
 
-    super.initState();
     getIt<AnalyticsService>().logScreenView('PumpActivityTracker');
   }
 
@@ -467,10 +467,11 @@ class _CustomPumpTrackerBottomSheetState
     final String activityID =
         widget.isEdit ? widget.existingActivity!.activityID : const Uuid().v4();
 
-    final String activityType =
-        _tabController.index == 0
+    final String activityType = widget.isEdit
+        ? widget.existingActivity!.activityType
+        : (_tabController.index == 0
             ? ActivityType.pumpTotal.name
-            : ActivityType.pumpLeftRight.name;
+            : ActivityType.pumpLeftRight.name);
 
     // Validation for total pump
     if (_tabController.index == 0) {
@@ -1109,92 +1110,102 @@ class _CustomPumpTrackerBottomSheetState
   }
 
   Widget _buildLeftSideInfoBox() {
-    return BlocBuilder<
+    return BlocListener<
       pumpLeft.PumpLeftSideTimerBloc,
       pumpLeft.PumpLeftSideTimerState
     >(
-      builder: (context, state) {
+      listener: (context, state) {
         if (state is pumpLeft.TimerStopped &&
             state.activityType == 'leftPumpTimer') {
-          // Only sync from bloc when bloc has actual values to avoid clearing edit data.
-          if (state.endTime != null) leftSideEndTime = state.endTime;
-          leftSideTotalTime = state.duration;
-          if (state.startTime != null) {
-            leftSideStartTime = state.startTime;
-          }
-        }
-        if (state is pumpLeft.TimerRunning &&
+          setState(() {
+            if (state.endTime != null) leftSideEndTime = state.endTime;
+            leftSideTotalTime = state.duration;
+            if (state.startTime != null) leftSideStartTime = state.startTime;
+          });
+        } else if (state is pumpLeft.TimerRunning &&
             state.activityType == 'leftPumpTimer') {
-          leftSideEndTime = null;
-          leftSideStartTime = state.startTime;
-          leftSideTotalTime = state.duration;
-        }
-        if (state is pumpLeft.TimerReset) {
-          if (!widget.isEdit) {
+          setState(() {
+            leftSideEndTime = null;
+            leftSideStartTime = state.startTime;
+            leftSideTotalTime = state.duration;
+          });
+        } else if (state is pumpLeft.TimerReset && !widget.isEdit) {
+          setState(() {
             leftSideEndTime = null;
             leftSideStartTime = null;
             leftSideTotalTime = null;
-          }
+          });
         }
-        final isLeftTimerRunning = state is pumpLeft.TimerRunning && 
-                                     state.activityType == 'leftPumpTimer';
-
-        return _buildInfoBox(
-          'left',
-          context.tr("left_side"),
-          leftSideStartTime,
-          leftSideEndTime,
-          leftSideTotalTime,
-          leftSideAmount,
-          leftSideUnit,
-          !isLeftTimerRunning,
-        );
       },
+      child: BlocBuilder<
+        pumpLeft.PumpLeftSideTimerBloc,
+        pumpLeft.PumpLeftSideTimerState
+      >(
+        builder: (context, state) {
+          final isLeftTimerRunning = state is pumpLeft.TimerRunning &&
+              state.activityType == 'leftPumpTimer';
+          return _buildInfoBox(
+            'left',
+            context.tr("left_side"),
+            leftSideStartTime,
+            leftSideEndTime,
+            leftSideTotalTime,
+            leftSideAmount,
+            leftSideUnit,
+            !isLeftTimerRunning,
+          );
+        },
+      ),
     );
   }
 
   Widget _buildRightSideInfoBox() {
-    return BlocBuilder<
+    return BlocListener<
       pumpRight.PumpRightSideTimerBloc,
       pumpRight.PumpRightSideTimerState
     >(
-      builder: (context, state) {
+      listener: (context, state) {
         if (state is pumpRight.TimerStopped &&
             state.activityType == 'rightPumpTimer') {
-          // Only sync from bloc when bloc has actual values to avoid clearing edit data.
-          if (state.endTime != null) rightSideEndTime = state.endTime;
-          rightSideTotalTime = state.duration;
-          if (state.startTime != null) {
-            rightSideStartTime = state.startTime;
-          }
-        }
-        if (state is pumpRight.TimerRunning &&
+          setState(() {
+            if (state.endTime != null) rightSideEndTime = state.endTime;
+            rightSideTotalTime = state.duration;
+            if (state.startTime != null) rightSideStartTime = state.startTime;
+          });
+        } else if (state is pumpRight.TimerRunning &&
             state.activityType == 'rightPumpTimer') {
-          rightSideEndTime = null;
-          rightSideStartTime = state.startTime;
-          rightSideTotalTime = state.duration;
-        }
-        if (state is pumpRight.TimerReset) {
-          if (!widget.isEdit) {
+          setState(() {
+            rightSideEndTime = null;
+            rightSideStartTime = state.startTime;
+            rightSideTotalTime = state.duration;
+          });
+        } else if (state is pumpRight.TimerReset && !widget.isEdit) {
+          setState(() {
             rightSideEndTime = null;
             rightSideStartTime = null;
             rightSideTotalTime = null;
-          }
+          });
         }
-        final isRightTimerRunning = state is pumpRight.TimerRunning && 
-                                       state.activityType == 'rightPumpTimer';
-
-        return _buildInfoBox(
-          'right',
-          context.tr("right_side"),
-          rightSideStartTime,
-          rightSideEndTime,
-          rightSideTotalTime,
-          rightSideAmount,
-          rightSideUnit,
-          !isRightTimerRunning,
-        );
       },
+      child: BlocBuilder<
+        pumpRight.PumpRightSideTimerBloc,
+        pumpRight.PumpRightSideTimerState
+      >(
+        builder: (context, state) {
+          final isRightTimerRunning = state is pumpRight.TimerRunning &&
+              state.activityType == 'rightPumpTimer';
+          return _buildInfoBox(
+            'right',
+            context.tr("right_side"),
+            rightSideStartTime,
+            rightSideEndTime,
+            rightSideTotalTime,
+            rightSideAmount,
+            rightSideUnit,
+            !isRightTimerRunning,
+          );
+        },
+      ),
     );
   }
 

@@ -47,13 +47,18 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     // Fetch babies from user account...
     on<LoadBabies>((event, emit) async {
       emit(BabyLoading());
-      final babies = await _babyRepository.getBabies();
-      emit(
-        BabyLoaded(
-          babies: babies,
-          selectedBaby: babies.isNotEmpty ? babies.first : null,
-        ),
-      );
+      try {
+        final babies = await _babyRepository.getBabies();
+        emit(
+          BabyLoaded(
+            babies: babies,
+            selectedBaby: babies.isNotEmpty ? babies.first : null,
+          ),
+        );
+      } catch (e) {
+        debugPrint('LoadBabies error: $e');
+        emit(BabyLoaded(babies: const [], selectedBaby: null));
+      }
     });
     on<GetBabyInfo>((event, emit) async {
       emit(BabyLoading());

@@ -21,7 +21,7 @@ class SleepTimerCircle extends StatefulWidget {
 }
 
 class _SleepTimerCircleState extends State<SleepTimerCircle>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   Timer? _timer;
   Duration _duration = Duration.zero;
   bool _isRunning = false;
@@ -30,8 +30,8 @@ class _SleepTimerCircleState extends State<SleepTimerCircle>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     context.read<SleepTimerBloc>().add(
       LoadTimerFromLocalDatabase(activityType: widget.activityType),
     );
@@ -104,7 +104,17 @@ class _SleepTimerCircleState extends State<SleepTimerCircle>
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && mounted) {
+      context.read<SleepTimerBloc>().add(
+        LoadTimerFromLocalDatabase(activityType: widget.activityType),
+      );
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _timer?.cancel();
     _animationController.dispose();
     super.dispose();

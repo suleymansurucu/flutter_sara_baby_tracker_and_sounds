@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sleep widget arka planı — Flutter AppColors.sleepColor ile birebir eşleşir -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#D9E4FF" />
+    <corners android:radius="16dp" />
+</shape>

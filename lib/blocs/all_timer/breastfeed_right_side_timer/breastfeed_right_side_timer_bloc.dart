@@ -27,25 +27,14 @@ class BreastfeedRightSideTimerBloc
     on<StartTimer>((event, emit) {
       _timer?.cancel();
       _startTime ??= DateTime.now();
-      final now = DateTime.now();
-      final dateTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
-        _startTime!.hour,
-        _startTime!.minute,
-        _startTime!.second,
-      );
-      _timerRepository.saveTimerStart(dateTime, event.activityType);
+      _timerRepository.saveTimerStart(_startTime!, event.activityType);
 
+      _duration = Duration.zero;
       _timer = Timer.periodic(Duration(seconds: 1), (_) {
         if (!isClosed) {
           add(Tick(activityType: event.activityType));
         }
       });
-      if (_startTime != null && _endTime != null) {
-        _duration = _calculateDuration(_startTime!, _endTime!);
-      }
       emit(
         TimerRunning(
           duration: _duration,
@@ -56,7 +45,9 @@ class BreastfeedRightSideTimerBloc
     });
 
     on<Tick>((event, emit) {
-      _duration += Duration(seconds: 1);
+      if (_startTime != null) {
+        _duration = DateTime.now().difference(_startTime!);
+      }
       emit(
         TimerRunning(
           duration: _duration,
@@ -67,30 +58,16 @@ class BreastfeedRightSideTimerBloc
     });
 
     on<SetStartTimeTimer>((event, emit) {
+      _timer?.cancel();
       _startTime = event.startTime;
 
-      if (_startTime != null) {
-        final now = DateTime.now();
-        final selectedStart = DateTime(
-          now.year,
-          now.month,
-          now.day,
-          _startTime!.hour,
-          _startTime!.minute,
-          now.second,
-        );
-        final current = DateTime.now();
-
-        if (selectedStart.isBefore(current)) {
-          _duration = current.difference(selectedStart);
-          _timerRepository.saveTimerStart(selectedStart, event.activityType);
-        } else {
-          _duration = Duration.zero;
-        }
+      if (_startTime != null && _endTime != null) {
+        _duration = _endTime!.difference(_startTime!);
+        if (_duration.isNegative) _duration = Duration.zero;
       } else {
         _duration = Duration.zero;
       }
-      _endTime ??= DateTime.now();
+
       emit(
         TimerStopped(
           duration: _duration,
@@ -102,12 +79,13 @@ class BreastfeedRightSideTimerBloc
     });
 
     on<StopTimer>((event, emit) async {
-      _timer!.cancel();
+      _timer?.cancel();
+      _timer = null;
 
       _endTime = DateTime.now();
 
-      if (_startTime != null && _endTime != null) {
-        _duration = _calculateDuration(_startTime!, _endTime!);
+      if (_startTime != null) {
+        _duration = _endTime!.difference(_startTime!);
       }
       await _timerRepository.stopTimer(event.activityType);
 
@@ -148,9 +126,8 @@ class BreastfeedRightSideTimerBloc
       );
     });
     on<SetDurationTimer>((event, emit) {
-      _endTime = DateTime.now();
-
-      _startTime = _calculateStartTime(_endTime!, event.duration);
+      _endTime ??= DateTime.now();
+      _startTime = _endTime!.subtract(event.duration);
 
       emit(
         TimerStopped(
@@ -207,59 +184,9 @@ class BreastfeedRightSideTimerBloc
     });
   }
 
-  Duration _calculateDuration(DateTime start, DateTime end) {
-    final now = DateTime.now();
-    final startDateTime = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      start.hour,
-      start.minute,
-      start.second,
-    );
-    var endDateTime = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      end.hour,
-      end.minute,
-      end.second,
-    );
-
-    if (endDateTime.isBefore(startDateTime)) {
-      endDateTime = endDateTime.add(const Duration(days: 1)); // Night spillover
-    }
-
-    return endDateTime.difference(startDateTime);
-  }
-
   @override
   Future<void> close() {
     _timer?.cancel();
     return super.close();
-  }
-
-  DateTime? _calculateStartTime(DateTime endTime, Duration duration) {
-    final now = DateTime.now();
-
-    final endDateTime = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      endTime.hour,
-      endTime.minute,
-      endTime.second,
-    );
-
-    final startDateTime = endDateTime.subtract(duration);
-
-    return DateTime(
-      startDateTime.year,
-      startDateTime.month,
-      startDateTime.day,
-      startDateTime.hour,
-      startDateTime.minute,
-      startDateTime.second,
-    );
   }
 }

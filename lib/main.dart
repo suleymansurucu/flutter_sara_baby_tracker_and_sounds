@@ -29,18 +29,19 @@ import 'package:open_baby_sara/blocs/sound_relaxing/sound_relaxing_bloc.dart';
 import 'package:open_baby_sara/blocs/theme/theme_bloc.dart';
 import 'package:open_baby_sara/blocs/vaccination/vaccination_bloc.dart';
 import 'package:open_baby_sara/core/constant/locale_constants.dart';
+import 'package:open_baby_sara/core/widget_bridge/widget_bridge_service.dart';
 import 'package:open_baby_sara/data/repositories/locator.dart';
+import 'package:open_baby_sara/data/services/notification_service.dart';
 import 'package:open_baby_sara/data/services/review_service.dart';
 import 'package:open_baby_sara/views/onboarding/welcome_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
 
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
@@ -48,6 +49,8 @@ void main() async {
   );
 
   await setupLocator();
+  await WidgetBridgeService.initialize();
+  await NotificationService.instance.initialize();
   await ReviewService().checkIfShouldRequestReview();
 
   runApp(
@@ -76,7 +79,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<BabyBloc>(create: (_) => BabyBloc()..add(LoadBabies())),
+        BlocProvider<BabyBloc>(create: (_) => BabyBloc()),
         BlocProvider<ThemeBloc>(create: (_) => ThemeBloc()),
         BlocProvider<BottomNavBloc>(create: (_) => BottomNavBloc()),
         BlocProvider<CaregiverBloc>(create: (_) => CaregiverBloc()),

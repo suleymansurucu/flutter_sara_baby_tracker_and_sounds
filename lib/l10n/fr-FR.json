@@ -656,6 +656,7 @@
   "last_feed": "Dernière tétée",
   "woke_up_at": "Réveillé à",
   "last_pump": "Dernière pompe",
+  "last_sleep": "Dernier sommeil",
   "tooth": "Dent",
   "caregiver_first_name": "Prénom du soignant",
   "Check-up": "Contrôle",
@@ -737,5 +738,21 @@
   "today_insight_empty": "Aucun enregistrement aujourd'hui. Ajoutez la première activité ! 👶",
   "today_insight_other_activities": "{name} aujourd'hui : {activities} 👶",
   "no_activities_with_filter": "Aucune activité pour ce filtre.",
-  "no_activities_date_range": "Aucune activité dans la plage de dates."
+  "no_activities_date_range": "Aucune activité dans la plage de dates.",
+  "reset_email_sent_title": "E-mail envoyé !",
+  "reset_email_sent_message": "Un lien de réinitialisation a été envoyé à votre adresse e-mail. Veuillez vérifier votre boîte de réception.",
+
+  "notif_sleep_title": "Enregistrez le sommeil 🌙",
+  "notif_sleep_body": "{name} est éveillé depuis un moment — appuyez pour enregistrer une sieste.",
+  "notif_feed_title": "Heure du repas ? 🍼",
+  "notif_feed_body": "Cela fait un moment depuis le dernier repas de {name}. Appuyez pour l'enregistrer.",
+  "notif_milestone_title": "{name} a {month} mois ! 🌟",
+  "notif_milestone_body": "Consultez les étapes de ce mois et célébrez la croissance de {name}.",
+  "notif_settings_title": "Paramètres de notification",
+  "notif_sleep_reminders": "Rappels de sommeil",
+  "notif_sleep_reminders_desc": "Me rappeler d'enregistrer le sommeil après la période d'éveil",
+  "notif_feed_reminders": "Rappels d'alimentation",
+  "notif_feed_reminders_desc": "Me rappeler d'enregistrer le repas après quelques heures",
+  "notif_milestone_notifications": "Jalons mensuels",
+  "notif_milestone_notifications_desc": "Célébrez chaque mois de croissance"
 }

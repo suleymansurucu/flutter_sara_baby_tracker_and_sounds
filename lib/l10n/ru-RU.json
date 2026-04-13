@@ -656,6 +656,7 @@
   "last_feed": "Последнее кормление",
   "woke_up_at": "Проснулся в",
   "last_pump": "Последнее сцеживание",
+  "last_sleep": "Последний сон",
   "tooth": "Зуб",
   "caregiver_first_name": "Имя воспитателя",
   "Check-up": "Проверка",
@@ -737,5 +738,21 @@
   "today_insight_empty": "Сегодня записей нет. Добавьте первую активность! 👶",
   "today_insight_other_activities": "{name} сегодня: {activities} 👶",
   "no_activities_with_filter": "Активности для этого фильтра не найдены.",
-  "no_activities_date_range": "В выбранном периоде активностей нет."
+  "no_activities_date_range": "В выбранном периоде активностей нет.",
+  "reset_email_sent_title": "Письмо отправлено!",
+  "reset_email_sent_message": "Ссылка для сброса пароля отправлена на ваш email. Пожалуйста, проверьте входящие.",
+
+  "notif_sleep_title": "Запишите сон 🌙",
+  "notif_sleep_body": "{name} уже давно не спит — нажмите, чтобы записать сон.",
+  "notif_feed_title": "Время кормления? 🍼",
+  "notif_feed_body": "Прошло время с последнего кормления {name}. Нажмите, чтобы записать.",
+  "notif_milestone_title": "{name} исполнилось {month} месяцев! 🌟",
+  "notif_milestone_body": "Проверьте этапы развития этого месяца и отметьте рост {name}.",
+  "notif_settings_title": "Настройки уведомлений",
+  "notif_sleep_reminders": "Напоминания о сне",
+  "notif_sleep_reminders_desc": "Напоминать записывать сон после времени бодрствования",
+  "notif_feed_reminders": "Напоминания о кормлении",
+  "notif_feed_reminders_desc": "Напоминать записывать кормление через несколько часов",
+  "notif_milestone_notifications": "Ежемесячные этапы",
+  "notif_milestone_notifications_desc": "Отмечайте каждый месяц роста"
 }

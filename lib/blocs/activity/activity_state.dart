@@ -12,7 +12,10 @@ final class ActivityLoading extends ActivityState {}
 final class TeethingLoading extends ActivityState {}
 
 final class ActivityAdded extends ActivityState {
-  ActivityAdded();
+  final String activityType;
+  final String babyName;
+
+  ActivityAdded({this.activityType = '', this.babyName = ''});
 }
 
 class ActivityError extends ActivityState {

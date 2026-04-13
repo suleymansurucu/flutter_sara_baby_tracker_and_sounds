@@ -414,7 +414,8 @@ class _HistoryPageState extends State<HistoryPage> {
         ),
       );
     } else if (activityType == ActivityType.bottleFeed.name ||
-        activityType == ActivityType.breastFeed.name) {
+        activityType == ActivityType.breastFeed.name ||
+        activityType == ActivityType.solids.name) {
       showModalBottomSheet(
         isScrollControlled: true,
         context: context,

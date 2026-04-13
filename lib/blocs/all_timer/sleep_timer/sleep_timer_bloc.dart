@@ -58,7 +58,9 @@ class SleepTimerBloc extends Bloc<SleepTimerEvent, SleepTimerState> {
     });
 
     on<Tick>((event, emit) {
-      _duration += Duration(seconds: 1);
+      if (_startTime != null) {
+        _duration = DateTime.now().difference(_startTime!);
+      }
       emit(
         TimerRunning(
           duration: _duration,

@@ -28,13 +28,24 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is ForgotPasswordSuccess) {
-            Navigator.pushReplacementNamed(context, AppRoutes.signin);
+            showCustomFlushbar(
+              context,
+              context.tr("reset_email_sent_title"),
+              context.tr("reset_email_sent_message"),
+              Icons.mark_email_read_outlined,
+              color: const Color(0xFF66BB6A),
+            );
+            Future.delayed(const Duration(seconds: 3), () {
+              if (context.mounted) {
+                Navigator.pushReplacementNamed(context, AppRoutes.signin);
+              }
+            });
           }
         },
         builder: (context, state) {
-          return state is AuthLoading
-              ? CircularProgressIndicator()
-              : Container(
+          return Container(
+                width: double.infinity,
+                height: double.infinity,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topRight,

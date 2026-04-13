@@ -656,6 +656,7 @@
   "last_feed": "Laatste voeding",
   "woke_up_at": "Wakker geworden om",
   "last_pump": "Laatste pomp",
+  "last_sleep": "Laatste slaap",
   "tooth": "Tand",
   "caregiver_first_name": "Voornaam verzorger",
   "Check-up": "Controle",
@@ -737,5 +738,21 @@
   "today_insight_empty": "Nog geen records vandaag. Voeg de eerste activiteit toe! 👶",
   "today_insight_other_activities": "{name} vandaag: {activities} 👶",
   "no_activities_with_filter": "Geen activiteiten voor dit filter.",
-  "no_activities_date_range": "Geen activiteiten in geselecteerd datumbereik."
+  "no_activities_date_range": "Geen activiteiten in geselecteerd datumbereik.",
+  "reset_email_sent_title": "E-mail verzonden!",
+  "reset_email_sent_message": "Een wachtwoord reset link is naar uw e-mailadres verzonden. Controleer uw inbox.",
+
+  "notif_sleep_title": "Slaap registreren 🌙",
+  "notif_sleep_body": "{name} is al een tijdje wakker — tik om een dutje te registreren.",
+  "notif_feed_title": "Voedingstijd? 🍼",
+  "notif_feed_body": "Het is alweer even geleden dat {name} gevoed werd. Tik om te registreren.",
+  "notif_milestone_title": "{name} is {month} maanden oud! 🌟",
+  "notif_milestone_body": "Bekijk de mijlpalen van deze maand en vier de groei van {name}.",
+  "notif_settings_title": "Meldingsinstellingen",
+  "notif_sleep_reminders": "Slaapherinneringen",
+  "notif_sleep_reminders_desc": "Herinner me om slaap te registreren na wakkere tijd",
+  "notif_feed_reminders": "Voedingsherinneringen",
+  "notif_feed_reminders_desc": "Herinner me om voeding te registreren na een paar uur",
+  "notif_milestone_notifications": "Maandelijkse mijlpalen",
+  "notif_milestone_notifications_desc": "Vier elke groeimaand"
 }

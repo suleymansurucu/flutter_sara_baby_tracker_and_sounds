@@ -360,9 +360,10 @@ class _CustomDiaperTrackerBottomSheetState
           'startTimeHour': selectedDatetime?.hour,
           'startTimeMin': selectedDatetime?.minute,
           'notes': notesController.text,
-          'mainSelection': selectedMain,
-          'textures': selectedTextures,
-          'colors': selectedColors,
+          // Defensive copies — setState().clear() below must not mutate these
+          'mainSelection': List<String>.from(selectedMain),
+          'textures': List<String>.from(selectedTextures),
+          'colors': List<String>.from(selectedColors),
           'isBlowout': isBlowout,
           'isDiaperRush': isDiaperRush,
           'isBloodInStool': isBloodInStool,
